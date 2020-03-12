@@ -1,16 +1,17 @@
 {
-  "name": "remote-control-electron",
+  "name": "keymote",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "controll made easy!",
+  "main": "./index.js",
   "scripts": {
     "pack": "electron-builder --dir",
     "all": "electron-builder -mwl",
     "dist": "electron-builder",
     "start": "electron ."
   },
+  "repository": "https://github.com/ShivamJoker/Keymote",
   "keywords": [],
-  "author": "",
+  "author": "shivam kumar,zaid kesarani",
   "license": "ISC",
   "devDependencies": {
     "asar": "^2.1.0",
@@ -27,9 +28,10 @@
     "ws": "^7.2.1"
   },
   "build": {
-    "appId": "your.id",
+    "appId": "com.keymote",
     "mac": {
-      "category": "your.app.category.type"
+      "category": "public.app-category.utilities"
     }
-  }
+  },
+  "postinstall": "electron-builder install-app-deps"
 }

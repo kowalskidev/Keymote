@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Tray, win, Menu, remote } = require("electron");
+const { app, BrowserWindow, ipcMain, Tray, win, Menu, remote, nativeImage } = require("electron");
 
 const path = require("path");
 const robot = require("robotjs");
@@ -23,12 +23,15 @@ app.on("ready", () => {
   createWindow();
 });
 
+
+
 global.status = { isRemoteConnected: false };
 
 const createTray = () => {
   //if its windows we will use cwd and show an icon
   if (isWindows) {
-    tray = new Tray(path.join(process.cwd(), "/icons/iconTemplate.png"));
+    const iconPath = path.join(process.cwd(), "/icons/iconTemplate.png");
+    tray = new Tray(nativeImage.createFromPath(iconPath));
   } else {
     tray = new Tray(path.join(__dirname, "/icons/iconTemplate.png"));
   }
@@ -154,6 +157,10 @@ const createWindow = () => {
     }
   });
 
+  window.once('ready-to-show', () => {
+    showWindow();
+  })
+
 };
 
 const toggleWindow = () => {
@@ -171,7 +178,8 @@ const showWindow = () => {
   // );
 };
 
-
-ipcMain.on("show-window", () => {
-  showWindow();
-});
+if(!isWindows){
+  ipcMain.on("show-window", () => {
+    showWindow();
+  });
+}
