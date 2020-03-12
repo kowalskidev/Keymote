@@ -30,7 +30,7 @@ global.status = { isRemoteConnected: false };
 const createTray = () => {
   //if its windows we will use cwd and show an icon
   if (isWindows) {
-    const iconPath = path.join(process.cwd(), "/icons/iconTemplate.png");
+    const iconPath = path.join(__dirname, "/icons/iconTemplate.png");
     tray = new Tray(nativeImage.createFromPath(iconPath));
   } else {
     tray = new Tray(path.join(__dirname, "/icons/iconTemplate.png"));
@@ -140,13 +140,13 @@ const createWindow = () => {
 
   window.loadURL(
     `file://${path.join(
-      isWindows ? process.cwd() : __dirname,
+      isWindows ? __dirname : __dirname,
       "/app/index.html"
     )}`
   );
 
   // browserWindow.loadURL(`file://${path.join(
-  //   isWindows ? process.cwd() : __dirname,
+  //   isWindows ? __dirname : __dirname,
   //   "/app/notification.html"
   // )}`);
 

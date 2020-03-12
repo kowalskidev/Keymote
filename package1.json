@@ -1,22 +1,23 @@
 {
-  "name": "Keymote",
-  "version": "0.1.0",
-  "description": "Control your keyboard easily from anywhere in the world",
-  "main": "index.js",
+  "name": "keymote",
+  "version": "1.0.0",
+  "description": "controll made easy!",
+  "main": "./index.js",
   "scripts": {
     "pack": "electron-builder --dir",
     "all": "electron-builder -mwl",
     "dist": "electron-builder",
     "start": "electron ."
   },
+  "repository": "https://github.com/ShivamJoker/Keymote",
   "keywords": [],
-  "author": "Shivam, Zaid",
+  "author": "shivam kumar,zaid kesarani",
   "license": "ISC",
   "devDependencies": {
-    "asar": "^2.1.0",
+    "asar": "^0.14.3",
     "electron": "^8.0.2",
     "electron-builder": "^22.3.2",
-    "electron-rebuild": "^1.10.0"
+    "electron-packager": "^14.2.1"
   },
   "dependencies": {
     "ip": "^1.1.5",
@@ -28,12 +29,7 @@
     "productName": "Keymote",
     "files": [
       "**/*",
-      "build/**/**",
-      "app/**"
-    ],
-    "asar": true,
-    "asarUnpack": [
-      "../node_modules/uws"
+      "build/**/**"
     ],
     "copyright": "Ⓒ2020 CreativeJE",
     "dmg": {
@@ -63,19 +59,9 @@
         "deb"
       ]
     },
-    "win": {
-      "target": "nsis",
-      "icon": "build/icon.png",
-      "artifactName": "${productName}-${version}.${ext}",
-      "publisherName": "CreativeJE"
-    },
-    "nsis": {
-      "allowToChangeInstallationDirectory": true,
-      "oneClick": false,
-      "perMachine": false
-    },
     "mac": {
       "category": "public.app-category.utilities"
     }
-  }
+  },
+  "postinstall": "electron-builder install-app-deps"
 }
