@@ -1,4 +1,13 @@
-const { app, BrowserWindow, ipcMain, Tray, win, Menu, remote, nativeImage } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Tray,
+  win,
+  Menu,
+  remote,
+  nativeImage
+} = require("electron");
 
 const path = require("path");
 const robot = require("robotjs");
@@ -14,7 +23,7 @@ if (process.platform === "win32") {
   isWindows = true;
 }
 
-app.on("before-quit", function() {
+app.on("before-quit", function () {
   isQuiting = true;
 });
 
@@ -23,29 +32,26 @@ app.on("ready", () => {
   createWindow();
 });
 
-
-
 global.status = { isRemoteConnected: false };
 
 const createTray = () => {
   //if its windows we will use cwd and show an icon
+  const iconPath = path.join(__dirname, "build/icons/iconTemplate.png")
   if (isWindows) {
-    const iconPath = path.join(__dirname, "/icons/iconTemplate.png");
     tray = new Tray(nativeImage.createFromPath(iconPath));
   } else {
-    tray = new Tray(path.join(__dirname, "/icons/iconTemplate.png"));
+    tray = new Tray(path.join(__dirname, "build/icons/iconTemplate.png"));
   }
 
   // Don't show the app in the mac doc
   if (app.dock) app.dock.hide();
 
   tray.on("click", event => {
-    console.log(remote)
-    console.log("status: ",global.status.isRemoteConnected)
-  
-  
+    console.log(remote);
+    console.log("status: ", global.status.isRemoteConnected);
+
     // const isRemoteConnected = global.status.isRemoteConnected;
-    
+
     // if (!isRemoteConnected) {
     //   showWindow(remote.getGlobal("status"));
     //   // return 0;
@@ -59,13 +65,13 @@ const createTray = () => {
       Menu.buildFromTemplate([
         {
           label: "Show App",
-          click: function() {
+          click: function () {
             showWindow();
           }
         },
         {
           label: "Quit",
-          click: function() {
+          click: function () {
             isQuiting = true;
             app.quit();
           }
@@ -107,6 +113,7 @@ const createWindow = () => {
     height: 430,
     // width: 1000,
     // height: 750,
+    skipTaskbar: true,
     show: true,
     frame: false,
     fullscreenable: true,
@@ -124,13 +131,13 @@ const createWindow = () => {
   //     backgroundThrottling: false,
   //     nodeIntegration: true
   //   }
-    
+
   // });
 
   const position = getWindowPosition();
   window.setPosition(position.x, position.y, false);
 
-  window.on("close", function(event) {
+  window.on("close", function (event) {
     if (!isQuiting) {
       event.preventDefault();
       window.hide();
@@ -140,13 +147,13 @@ const createWindow = () => {
 
   window.loadURL(
     `file://${path.join(
-      isWindows ? __dirname : __dirname,
+      __dirname,
       "/app/index.html"
     )}`
   );
 
   // browserWindow.loadURL(`file://${path.join(
-  //   isWindows ? __dirname : __dirname,
+  //   isWindows ? process.cwd() : __dirname,
   //   "/app/notification.html"
   // )}`);
 
@@ -156,11 +163,6 @@ const createWindow = () => {
       window.hide();
     }
   });
-
-  window.once('ready-to-show', () => {
-    showWindow();
-  })
-
 };
 
 const toggleWindow = () => {
@@ -178,8 +180,6 @@ const showWindow = () => {
   // );
 };
 
-if(!isWindows){
-  ipcMain.on("show-window", () => {
-    showWindow();
-  });
-}
+ipcMain.on("show-window", () => {
+  showWindow();
+});
